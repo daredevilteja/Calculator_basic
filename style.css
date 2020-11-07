@@ -1,0 +1,15 @@
+.input {
+  width: 300px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  width: 300px;
+}
+
+.grid-container1 {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  width: 300px;
+}
