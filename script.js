@@ -6,6 +6,7 @@ const input = document.getElementById("input");
 
 let firstNumber = "";
 let secondNumber = "";
+let oper = "";
 let result = "";
 
 numberButtons.forEach((button) => {
@@ -17,50 +18,79 @@ numberButtons.forEach((button) => {
 
 signButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    if (secondNumber === "") {
-      secondNumber = firstNumber;
-      firstNumber = "";
-    } else {
-      result = compute(firstNumber, button.value, secondNumber);
-      secondNumber = result;
-      firstNumber = "";
-    }
+    chooseOperation(button.value);
+    updateDisplay();
   });
 });
 
-/*equalsButton.addEventListener("click", () => {
-  console.log(result);
-});*/
+equalsButton.addEventListener("click", () => {
+  compute(firstNumber, oper, secondNumber);
+  updateDisplay();
+});
+
+clearButton.addEventListener("click", () => {
+  clear();
+  updateDisplay();
+});
 
 function appendNumber(value) {
   if (value === "." && firstNumber.includes(".")) {
     return;
   }
-  firstNumber += num;
+  firstNumber += value;
   console.log(firstNumber);
 }
 
 function updateDisplay() {
-  input.value = firstNumber;
+  if (oper !== undefined) {
+    input.value = secondNumber + oper + firstNumber;
+  } else {
+    input.value = firstNumber;
+  }
+}
+
+function chooseOperation(operation) {
+  if (firstNumber === "") {
+    return;
+  }
+  if (secondNumber !== "") {
+    compute(firstNumber, oper, secondNumber);
+  }
+  oper = operation;
+  secondNumber = firstNumber;
+  firstNumber = "";
 }
 
 function compute(first, sign, second) {
+  let computation = 0;
   const current = Number(first);
   const prev = Number(second);
   const op = sign;
 
   switch (op) {
     case "+":
-      return prev + current;
+      computation = prev + current;
       break;
     case "-":
-      return prev - current;
+      computation = prev - current;
       break;
     case "*":
-      return prev * current;
+      computation = prev * current;
       break;
     case "/":
-      return prev / current;
+      computation = prev / current;
+      break;
+    default:
       break;
   }
+
+  firstNumber = computation;
+  oper = undefined;
+  secondNumber = "";
+}
+
+function clear() {
+  firstNumber = "";
+  secondNumber = "";
+  oper = "";
 }
